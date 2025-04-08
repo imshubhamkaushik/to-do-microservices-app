@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+        - name: notification-service
+          image: imshubhamkaushik/notification-service:latest
+          ports:
+            - containerPort: 10003
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongo:27017/notificationdb
+            - name: PORT
+              value: "10003"

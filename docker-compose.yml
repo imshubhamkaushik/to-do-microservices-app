@@ -1,0 +1,38 @@
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "10001:10001"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/user-service
+      - JWT_SECRET=supersecretkey123
+    depends_on:
+      - mongo
+
+  task-service:
+    build: ./task-service
+    container_name: task-service
+    ports:
+      - "10002:10002"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/task-service
+      - JWT_SECRET=supersecretkey123
+    depends_on:
+      - mongo
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+      - "10003:10003"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/notification-service
+    depends_on:
+      - mongo
